@@ -81,7 +81,7 @@ export const getNotes:RequestHandler = async (req, res, next) => {
         note.text = newText;
 
         const updateNote =await note.save();
-
+        // const updateNote = await NoteModel.findByIdAndUpdate(noteId);
         res.status(200).json(updateNote);
      
     } catch (error) {
