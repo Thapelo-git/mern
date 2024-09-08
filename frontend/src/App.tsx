@@ -26,7 +26,8 @@ useEffect(()=>{
 
   return (
     <Container>
-      <Button onClick={()=>setShowAddNoteDialog(true)}>
+      <Button className='mb-4'
+      onClick={()=>setShowAddNoteDialog(true)}>
         Add new note
       </Button>
       <Row xs={1} md={2} xl={3} className='g-4'>
@@ -42,7 +43,12 @@ useEffect(()=>{
       {
         showAddNoteDialog &&
         <AddNoteDialog
-        onDismiss={()=>setShowAddNoteDialog(false)}/>
+        onDismiss={()=>setShowAddNoteDialog(false)}
+        onNoteSaved={(newNote)=>{
+          setNotes([...notes,newNote])
+          setShowAddNoteDialog(false)
+        }}
+        />
       }
     </Container>
    
