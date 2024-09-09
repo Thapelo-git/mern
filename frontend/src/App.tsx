@@ -9,6 +9,8 @@ import * as NotesApi from "./network/notes_api";
 import AddNoteDialog from './components/AddEditNoteDialog';
 import {FaPlus} from 'react-icons/fa'
 import AddEditNoteDialog from './components/AddEditNoteDialog';
+import SignUpModal from './components/SignUpModal';
+import LoginModal from './components/LoginModal';
 function App() {
   const [notes,setNotes]=useState<NoteModel[]>([]);
   const [notesLoading,setNotesLoading] = useState(true)
@@ -93,6 +95,19 @@ const notesGrid=
           setNotes(notes.map(existingNote => existingNote._id === updateNote._id ? updateNote : existingNote))
           setNoteToEdit(null);
         }}
+        />
+      }
+
+      {false && 
+      <SignUpModal onDismiss={()=>{}}
+      onSignUpSuccessful={()=>{}}
+      />
+      }
+      {
+        false &&
+        <LoginModal
+        onDismiss={()=>{}}
+        onLoginSuccessful={()=>{}}
         />
       }
     </Container>
