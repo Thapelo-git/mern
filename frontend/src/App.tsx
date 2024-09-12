@@ -12,36 +12,67 @@ import AddEditNoteDialog from './components/AddEditNoteDialog';
 import SignUpModal from './components/SignUpModal';
 import LoginModal from './components/LoginModal';
 import NavBar from './components/NavBar';
+import NotesPageLoggedInView from './components/NotesPageLoggedInView';
+import NotesPageLoggedOutView from './components/NotesPageLoggedOutView';
+import { User } from './models/user';
+
 function App() {
   
+  const [showLoginModal,setShowLoginModal]=useState(false);
+  const [ShowSignUpModal,setShowSignUpModal]=useState(false)
+  const [loggedInUser,setLoggedInUser]=useState<User|null>(null)
 
+
+  
+  
+useEffect(()=>{
+  async function fetchloggedInUser(){
+    try {
+      const user =await NotesApi.getLoggedInUser();
+      setLoggedInUser(user)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  fetchloggedInUser();
+},[])
 
   return (
     <div>
       <NavBar
-      loggedInUser={null}
-      onSignUpClicked={()=>{}}
-      onLoginClicked={()=>{}}
-      onLogoutSuccessful={()=>{}}
+      loggedInUser={loggedInUser}
+      onSignUpClicked={()=>setShowLoginModal(true)}
+      onLoginClicked={()=>setShowSignUpModal(true)}
+      onLogoutSuccessful={()=>setLoggedInUser(null)}
       />
     <Container className={styles.notesPage}>
     
-   
+   <>
+   {loggedInUser
+   ?<NotesPageLoggedInView/>
+  :<NotesPageLoggedOutView/>}
+   </>
      
-
-      {false && 
-      <SignUpModal onDismiss={()=>{}}
-      onSignUpSuccessful={()=>{}}
+    </Container>
+      {ShowSignUpModal && 
+      <SignUpModal onDismiss={()=>setShowSignUpModal(false)}
+      onSignUpSuccessful={(user)=>{
+        setLoggedInUser(user);
+        setShowSignUpModal(false)
+      }}
       />
       }
       {
-        false &&
+        showLoginModal &&
         <LoginModal
-        onDismiss={()=>{}}
-        onLoginSuccessful={()=>{}}
+        onDismiss={()=>setShowLoginModal(false)}
+        onLoginSuccessful={(user)=>{
+          setLoggedInUser(user)
+          setShowLoginModal(false)
+        }}
         />
       }
-    </Container>
+    
     </div>
     
   );
